@@ -165,7 +165,6 @@
     <ClInclude Include="..\..\..\include\theora\theora.h" />
     <ClInclude Include="..\..\..\include\theora\theoradec.h" />
     <ClInclude Include="..\..\..\lib\internal.h" />
-    <ClInclude Include="..\..\..\lib\mathops.h" />
     <ClInclude Include="..\..\..\lib\modedec.h" />
     <ClInclude Include="..\..\..\lib\apiwrapper.h" />
     <ClInclude Include="..\..\..\lib\bitpack.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="..\..\..\lib\x86_vc\x86cpu.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\lib\mathops.c" />
     <ClCompile Include="..\..\..\lib\x86_vc\x86cpu.c" />
     <ClCompile Include="..\..\..\lib\apiwrapper.c" />
     <ClCompile Include="..\..\..\lib\bitpack.c" />
