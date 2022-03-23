@@ -9,6 +9,7 @@ VORBIS_SOURCES := $(wildcard $(LOCAL_PATH)/../../libvorbis/lib/*.c)
 THEORA_SOURCES := $(wildcard $(LOCAL_PATH)/../../libtheora/lib/*.c)
 
 THEORA_ARM_OPTIM := $(wildcard $(LOCAL_PATH)/../../libtheora/lib/arm/*.c)
+THEORA_ARM_OPTIM += $(wildcard $(LOCAL_PATH)/../../libtheora/lib/arm/*.s)
 THEORA_X86_OPTIM := $(wildcard $(LOCAL_PATH)/../../libtheora/lib/x86/*.c)
 
 ######################################################################
@@ -79,10 +80,6 @@ LOCAL_CFLAGS := \
     -DPIC
 
 ifeq ($(TARGET_ARCH), arm)
-    THEORA_ARM_OPTIM += $(wildcard $(LOCAL_PATH)/../../libtheora/lib/arm/*.s)
-    LOCAL_SRC_FILES+= $(THEORA_ARM_OPTIM:$(LOCAL_PATH)/%=%)
-    LOCAL_CFLAGS+= -DOC_ARM_ASM
-else ifeq ($(TARGET_ARCH), arm64)
     LOCAL_SRC_FILES+= $(THEORA_ARM_OPTIM:$(LOCAL_PATH)/%=%)
     LOCAL_CFLAGS+= -DOC_ARM_ASM
 else ifeq ($(TARGET_ARCH), x86)
