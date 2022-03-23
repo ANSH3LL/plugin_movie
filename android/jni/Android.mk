@@ -61,7 +61,6 @@ LOCAL_CFLAGS := \
     -D_REENTRANT \
     -DRtt_ANDROID_ENV \
     -ffast-math \
-    -fsigned-char \
     -Ofast \
     -fPIC \
     -DPIC
@@ -72,10 +71,8 @@ LOCAL_SHARED_LIBRARIES := liblua libcorona libopenal
 
 LOCAL_STATIC_LIBRARIES := libogg libvorbis libtheora
 
-ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
-    LOCAL_CFLAGS+= -D_ARM_ASSEM_ -D_M_ARM
-else ifeq ($(TARGET_ARCH_ABI), arm64-v8a)
-    LOCAL_CFLAGS+= -D_ARM_ASSEM_ -D_M_ARM
+ifeq ($(TARGET_ARCH), arm)
+    LOCAL_CFLAGS+= -D_ARM_ASSEM_
 endif
 
 LOCAL_ARM_MODE := arm
