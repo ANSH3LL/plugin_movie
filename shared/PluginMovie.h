@@ -7,6 +7,8 @@
 #ifndef _SimulatorPluginLibrary_H__
 #define _SimulatorPluginLibrary_H__
 
+#include <cstring>
+
 #include <CoronaLua.h>
 #include <CoronaMacros.h>
 #include <CoronaLibrary.h>

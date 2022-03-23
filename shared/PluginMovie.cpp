@@ -292,8 +292,7 @@ static int newMovieTexture(lua_State *L) {
         delete movie;
 
         lua_pushnil(L);
-        lua_pushstring(L, "File does not exist");
-        return 2;
+        return 1;
     }
 
     movie->decoder = THEORAPLAY_startDecodeFile(movie->path, NUM_MAXFRAMES, THEORAPLAY_VIDFMT_RGBA);
@@ -302,8 +301,7 @@ static int newMovieTexture(lua_State *L) {
         delete movie;
 
         lua_pushnil(L);
-        lua_pushstring(L, "Unable to decode file");
-        return 2;
+        return 1;
     }
 
     movie->source = lua_tonumber(L, 2);
