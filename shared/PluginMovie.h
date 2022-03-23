@@ -18,8 +18,8 @@
 #include "AL/alc.h"
 #include "theoraplay.h"
 
-#define NUM_BUFFERS 42
-#define NUM_MAXFRAMES 32
+#define NUM_BUFFERS 36
+#define NUM_MAXFRAMES 36
 
 // ----------------------------------------------------------------------------
 
