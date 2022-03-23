@@ -36,6 +36,7 @@ Refer to the example project in the `Corona/` directory
 - Only mono and stereo audio is supported. Videos with more than 2 audio channels might not sound as expected
 - Playback speed is limited by the engine's fps. It is thus recommended to use videos with a framerate several values below your game's fps as set in `config.lua`
 - It is recommended to remove all other `enterFrame` event listeners before video playback to ensure smooth playback
+- Audio *might* be a bit finnicky at times
 
 # Credits
 [theoraplay](https://github.com/icculus/theoraplay) by [@icculus](https://github.com/icculus)
