@@ -36,7 +36,6 @@ struct Movie {
     const THEORAPLAY_VideoFrame *video = NULL;
     const THEORAPLAY_AudioPacket *audio = NULL;
 
-    bool loop = false;
     bool playing = false;
 
     bool audiostarted = false;
@@ -45,7 +44,6 @@ struct Movie {
     unsigned int framems = 0;
     unsigned int elapsed = 0;
 
-    const char *path = NULL;
     unsigned char empty[4] = {};
 
     ALuint source = NULL;
@@ -131,8 +129,8 @@ static int GetField(lua_State *L, const char *field, void *context) {
 static void Dispose(void *context) {
     Movie *movie = (Movie*)context;
 
-    THEORAPLAY_freeVideo(movie->video);
     THEORAPLAY_freeAudio(movie->audio);
+    THEORAPLAY_freeVideo(movie->video);
 
     delete movie;
 }
@@ -210,35 +208,6 @@ MAINLOOP:
         goto MAINLOOP;
     }
 
-    // At this point, we've completed a full cycle of playback and need to reset so we can start again
-    // TODO: dispatch loop event
-    else if(movie->loop && movie->playing) {
-        // stop decoding
-        THEORAPLAY_stopDecode(movie->decoder);
-
-        // free the last audio & video frames
-        THEORAPLAY_freeAudio(movie->audio);
-        THEORAPLAY_freeVideo(movie->video);
-
-        // reset state
-        if(movie->audiostarted) {
-            alSourceRewind(movie->source);
-            alSourcei(movie->source, AL_BUFFER, 0);
-        }
-
-        movie->audiocompleted = false;
-        movie->audiostarted = false;
-
-        movie->decoder = NULL;
-        movie->audio = NULL;
-        movie->video = NULL;
-
-        movie->elapsed = 0;
-
-        // restart decoding
-        movie->decoder = THEORAPLAY_startDecodeFile(movie->path, NUM_MAXFRAMES, THEORAPLAY_VIDFMT_RGBA);
-    }
-
     return 0;
 }
 
@@ -280,7 +249,7 @@ static int stop(lua_State *L) {
 static int isActive(lua_State *L, void *context) {
     Movie *movie = (Movie*)context;
 
-    lua_pushboolean(L, movie->loop || (movie->audiostarted && !movie->audiocompleted) ? true : THEORAPLAY_isDecoding(movie->decoder));
+    lua_pushboolean(L, movie->audiostarted && !movie->audiocompleted ? true : THEORAPLAY_isDecoding(movie->decoder));
     return 1;
 }
 
@@ -303,17 +272,19 @@ static int currentTime(lua_State *L, void *context) {
 static int newMovieTexture(lua_State *L) {
     Movie *movie = new Movie;
 
-    movie->path = lua_tostring(L, 1);
+    const char *path = lua_tostring(L, 1);
 
-    if(!movie->path) {
+    // File does not exist
+    if(!path) {
         delete movie;
 
         lua_pushnil(L);
         return 1;
     }
 
-    movie->decoder = THEORAPLAY_startDecodeFile(movie->path, NUM_MAXFRAMES, THEORAPLAY_VIDFMT_RGBA);
+    movie->decoder = THEORAPLAY_startDecodeFile(path, NUM_MAXFRAMES, THEORAPLAY_VIDFMT_RGBA);
 
+    // Invalid video format / insufficient memory / not a theora video, etc
     if(!movie->decoder) {
         delete movie;
 
@@ -322,7 +293,6 @@ static int newMovieTexture(lua_State *L) {
     }
 
     movie->source = lua_tonumber(L, 2);
-    movie->loop = lua_toboolean(L, 3);
 
     alSourceRewind(movie->source);
     alSourcei(movie->source, AL_BUFFER, 0);
