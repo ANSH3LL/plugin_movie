@@ -29,6 +29,7 @@ function lib.newMovieRect(opts)
     --
     rect._playing = false
     rect._complete = false
+    rect._preserve = opts.preserve or false
     --
     rect._play = function()
         local ctime, delta = system.getTimer(), 0
@@ -73,11 +74,11 @@ function lib.newMovieRect(opts)
         --
         timer.performWithDelay(100,
             function()
-                rect.texture:releaseSelf()
-                rect.texture = nil
-                --
-                rect:removeSelf()
-                rect.fill = nil
+                if not rect._preserve then
+                    rect.texture:releaseSelf()
+                    rect.texture = nil
+                    rect:removeSelf()
+                end
                 --
                 if listener then
                     listener({name = 'movie', phase = 'stopped', completed = rect._complete})
