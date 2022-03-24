@@ -75,6 +75,14 @@ bool startAudioStream(Movie *movie) {
     return true;
 }
 
+void stopAudioStream(Movie *movie) {
+    alSourceStop(movie->source);
+    alSourceRewind(movie->source);
+
+    alSourcei(movie->source, AL_BUFFER, 0);
+    alDeleteBuffers(NUM_BUFFERS, movie->buffers);
+}
+
 // ----------------------------------------------------------------------------
 
 static unsigned int GetWidth(void *context) {
@@ -106,6 +114,8 @@ static int GetField(lua_State *L, const char *field, void *context) {
         result = PushCachedFunction(L, play);
     else if(strcmp(field, "pause") == 0)
         result = PushCachedFunction(L, pause);
+    else if(strcmp(field, "stop") == 0)
+        result = PushCachedFunction(L, stop);
 
     else if(strcmp(field, "isActive") == 0)
         result = isActive(L, context);
@@ -121,14 +131,8 @@ static int GetField(lua_State *L, const char *field, void *context) {
 static void Dispose(void *context) {
     Movie *movie = (Movie*)context;
 
-    alSourceStop(movie->source);
-
-    THEORAPLAY_stopDecode(movie->decoder);
     THEORAPLAY_freeVideo(movie->video);
     THEORAPLAY_freeAudio(movie->audio);
-
-    alSourcei(movie->source, AL_BUFFER, 0);
-    alDeleteBuffers(NUM_BUFFERS, movie->buffers);
 
     delete movie;
 }
@@ -188,7 +192,7 @@ MAINLOOP:
                 if(movie->framems == 0)
                     movie->framems = (unsigned int)(1000.0 / movie->video->fps);
 
-                while(currentTime >= movie->video->playms + movie->framems) {
+                while(currentTime >= (movie->video->playms + movie->framems)) {
                     const THEORAPLAY_VideoFrame *next_frame = THEORAPLAY_getVideo(movie->decoder);
                     if(!next_frame) break;
 
@@ -201,7 +205,7 @@ MAINLOOP:
         }
     }
 
-    // Play any audio that remains after decoding is completed
+    // Finish playing any audio that remains after decoding is completed
     else if(movie->audiostarted && !movie->audiocompleted) {
         goto MAINLOOP;
     }
@@ -217,8 +221,10 @@ MAINLOOP:
         THEORAPLAY_freeVideo(movie->video);
 
         // reset state
-        if(movie->audiostarted)
+        if(movie->audiostarted) {
+            alSourceRewind(movie->source);
             alSourcei(movie->source, AL_BUFFER, 0);
+        }
 
         movie->audiocompleted = false;
         movie->audiostarted = false;
@@ -256,6 +262,17 @@ static int pause(lua_State *L) {
         if(movie->audiostarted && !movie->audiocompleted)
             alSourcePause(movie->source);
     }
+
+    return 0;
+}
+
+static int stop(lua_State *L) {
+    Movie *movie = (Movie*)CoronaExternalGetUserData(L, 1);
+
+    movie->playing = false;
+    stopAudioStream(movie);
+
+    THEORAPLAY_stopDecode(movie->decoder);
 
     return 0;
 }

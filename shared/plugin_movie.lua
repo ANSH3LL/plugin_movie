@@ -35,8 +35,8 @@ function lib.newMovieRect(opts)
         local ctime, delta = system.getTimer(), 0
         --
         if rect._playing then
-            if rect.ptime then
-                delta = ctime - rect.ptime
+            if rect._ptime then
+                delta = ctime - rect._ptime
             end
             --
             rect.texture:update(delta)
@@ -48,7 +48,7 @@ function lib.newMovieRect(opts)
             end
         end
         --
-        rect.ptime = ctime
+        rect._ptime = ctime
     end
     --
     rect.play = function()
@@ -70,7 +70,7 @@ function lib.newMovieRect(opts)
     rect.stop = function()
         Runtime:removeEventListener('enterFrame', rect._play)
         --
-        rect.pause()
+        rect.texture:stop()
         --
         timer.performWithDelay(100,
             function()

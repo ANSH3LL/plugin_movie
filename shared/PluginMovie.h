@@ -53,6 +53,7 @@ static int update(lua_State *L);
 
 static int play(lua_State *L);
 static int pause(lua_State *L);
+static int stop(lua_State *L);
 
 static int isActive(lua_State *L, void *context);
 static int isPlaying(lua_State *L, void *context);
