@@ -118,110 +118,110 @@ end
 
 -- Looping video
 function lib.newMovieLoop(opts)
-    local loop = {
-        iterations = 1,
-        _stop = false,
-        playing = false,
-        listener = opts.listener
-    }
+    local group = display.newGroup()
     --
-    loop.callback = function(event)
-        if loop._stop then return end
+    group.iterations = 1,
+    group._stop = false,
+    group.playing = false,
+    group.listener = opts.listener
+    --
+    group.callback = function(event)
+        if group._stop then return end
         --
-        loop.iterations = loop.iterations + 1
+        group.iterations = group.iterations + 1
         --
-        if loop.iterations % 2 == 0 then
-            loop.two.isVisible = true
-            loop.two.play()
+        if group.iterations % 2 == 0 then
+            group.two.isVisible = true
+            group.two.play()
             --
-            timer.performWithDelay(300, loop.one.dispose)
+            timer.performWithDelay(300, group.one.dispose)
             timer.performWithDelay(500,
                 function()
-                    loop.one = lib.newMovieRect(loop.options1)
-                    loop.one.isVisible = false
+                    group.one = lib.newMovieRect(group.options1)
+                    group.one.isVisible = false
                 end
             )
         else
-            loop.one.isVisible = true
-            loop.one.play()
+            group.one.isVisible = true
+            group.one.play()
             --
-            timer.performWithDelay(300, loop.two.dispose)
+            timer.performWithDelay(300, group.two.dispose)
             timer.performWithDelay(500,
                 function()
-                    loop.two = lib.newMovieRect(loop.options2)
-                    loop.two.isVisible = false
+                    group.two = lib.newMovieRect(group.options2)
+                    group.two.isVisible = false
                 end
             )
         end
         --
-        if loop.listener then
-            loop.listener(
+        if group.listener then
+            group.listener(
                 {
                     name = 'movie',
                     phase = 'loop',
-                    iterations = loop.iterations
+                    iterations = group.iterations
                 }
             )
         end
     end
     --
-    loop.options1 = {
+    group.options1 = {
         x = opts.x, y = opts.y,
-        listener = loop.callback,
+        listener = group.callback,
         preserve = true, channel = opts.channel1,
         width = opts.width, height = opts.height,
         filename = opts.filename, baseDir = opts.baseDir
     }
     --
-    loop.options2 = copy(loop.options1)
-    loop.options2.channel = opts.channel2
+    group.options2 = copy(group.options1)
+    group.options2.channel = opts.channel2
     --
-    loop.one = lib.newMovieRect(loop.options1)
-    loop.two = lib.newMovieRect(loop.options2)
-    loop.two.isVisible = false
+    group.one = lib.newMovieRect(group.options1)
+    group.two = lib.newMovieRect(group.options2)
+    group.two.isVisible = false
     --
-    loop.rect = function()
-        return loop.iterations % 2 == 0 and loop.two or loop.one
+    group.rect = function()
+        return group.iterations % 2 == 0 and group.two or group.one
     end
     --
-    loop.play = function()
-        if loop.playing then return end
+    group.play = function()
+        if group.playing then return end
         --
-        loop.rect().play()
-        loop.playing = true
+        group.rect().play()
+        group.playing = true
     end
     --
-    loop.pause = function()
-        if not loop.playing then return end
+    group.pause = function()
+        if not group.playing then return end
         --
-        loop.playing = false
-        loop.rect().pause()
+        group.playing = false
+        group.rect().pause()
     end
     --
-    loop.stop = function()
-        if loop._stop then return end
+    group.stop = function()
+        if group._stop then return end
         --
-        loop._stop = true
-        loop.playing = false
+        group._stop = true
+        group.playing = false
         --
-        loop.one.stop()
-        loop.two.stop()
+        group.one.stop()
+        group.two.stop()
         --
-        loop.one.dispose()
-        loop.two.dispose()
+        group.one.dispose()
+        group.two.dispose()
         --
-        if loop.listener then
-            loop.listener(
+        if group.listener then
+            group.listener(
                 {
                     name = 'movie',
                     phase = 'stopped',
-                    completed = loop.iterations > 1 and true or false
+                    completed = group.iterations > 1 and true or false
                 }
             )
         end
     end
     --
-    return loop
+    return group
 end
 
 -- Return an instance
