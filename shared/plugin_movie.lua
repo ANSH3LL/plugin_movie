@@ -134,22 +134,34 @@ function lib.newMovieLoop(opts)
             group.two.isVisible = true
             group.two.play()
             --
-            timer.performWithDelay(300, group.one.dispose)
-            timer.performWithDelay(500,
+            timer.performWithDelay(300,
                 function()
-                    group.one = lib.newMovieRect(group.options1)
                     group.one.isVisible = false
+                    group.one.texture:releaseSelf()
+                    group.one.texture = lib.newMovieTexture(group.options1)
+                    --
+                    group.one.fill = {
+                        type = 'image',
+                        filename = group.one.texture.filename,
+                        baseDir = group.one.texture.baseDir
+                    }
                 end
             )
         else
             group.one.isVisible = true
             group.one.play()
             --
-            timer.performWithDelay(300, group.two.dispose)
-            timer.performWithDelay(500,
+            timer.performWithDelay(300,
                 function()
-                    group.two = lib.newMovieRect(group.options2)
                     group.two.isVisible = false
+                    group.two.texture:releaseSelf()
+                    group.two.texture = lib.newMovieTexture(group.options2)
+                    --
+                    group.two.fill = {
+                        type = 'image',
+                        filename = group.two.texture.filename,
+                        baseDir = group.two.texture.baseDir
+                    }
                 end
             )
         end
