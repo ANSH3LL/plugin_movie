@@ -120,8 +120,8 @@ end
 function lib.newMovieLoop(opts)
     local group = display.newGroup()
     --
-    group.iterations = 1,
     group._stop = false,
+    group.iterations = 1,
     group.playing = false,
     group.listener = opts.listener
     --
@@ -192,6 +192,9 @@ function lib.newMovieLoop(opts)
     group.two = lib.newMovieRect(group.options2)
     group.two.isVisible = false
     --
+    group:insert(group.one)
+    group:insert(group.two)
+    --
     group.rect = function()
         return group.iterations % 2 == 0 and group.two or group.one
     end
@@ -221,6 +224,8 @@ function lib.newMovieLoop(opts)
         --
         group.one.dispose()
         group.two.dispose()
+        --
+        group:removeSelf()
         --
         if group.listener then
             group.listener(

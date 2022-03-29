@@ -41,8 +41,8 @@ struct Movie {
     bool audiostarted = false;
     bool audiocompleted = false;
 
-    unsigned int framems = 0;
     unsigned int elapsed = 0;
+    unsigned int framems = 0;
 
     unsigned char empty[4] = {};
 
@@ -182,8 +182,12 @@ MAINLOOP:
                     movie->audio = next_packet;
                 }
 
-                if(state == AL_STOPPED)
-                    movie->audiocompleted = true;
+                if(state != AL_PLAYING && state != AL_PAUSED) {
+                    if(THEORAPLAY_availableAudio(movie->decoder))
+                        alSourcePlay(movie->source);
+                    else
+                        movie->audiocompleted = true;
+                }
             }
 
             if(movie->video) {
