@@ -1,0 +1,9 @@
+av_sync_test.ogv - https://www.youtube.com/watch?v=ucZl6vQ_8Uo
+
+loop_test_nosound.ogv - https://www.youtube.com/watch?v=ocP5mqteivQ
+
+sample_video.ogv - from https://gist.github.com/jsturgis/3b19447b304616f18657
+
+loop_test_sound.ogv - from https://gist.github.com/jsturgis/3b19447b304616f18657
+
+loop_test_novideo.ogg - from https://fardifferent.itch.io/loops - "8-Bit Hero Quest" by Of Far Different Nature (https://fardifferent.bandcamp.com/)
