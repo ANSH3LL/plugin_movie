@@ -288,22 +288,22 @@ static int newMovieTexture(lua_State *L) {
 
     const char *path = lua_tostring(L, 1);
 
+    // File does not exist
     if(!path) {
         delete movie;
 
         lua_pushnil(L);
-        lua_pushstring(L, "File does not exist");
-        return 2;
+        return 1;
     }
 
     movie->decoder = THEORAPLAY_startDecodeFile(path, NUM_MAXFRAMES, THEORAPLAY_VIDFMT_RGBA);
 
+    // Invalid pixel format / insufficient memory
     if(!movie->decoder) {
         delete movie;
 
         lua_pushnil(L);
-        lua_pushstring(L, "Invalid pixel format / insufficient memory");
-        return 2;
+        return 1;
     }
 
     movie->source = lua_tonumber(L, 2);
