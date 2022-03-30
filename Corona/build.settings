@@ -1,0 +1,88 @@
+--
+-- For more information on build.settings, see the Project Build Settings guide at:
+-- https://docs.coronalabs.com/guide/distribution/buildSettings
+--
+
+settings =
+{
+	orientation =
+	{
+		-- Supported values for orientation:
+		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
+		default = "landscapeLeft",
+		supported = { "landscapeLeft", "landscapeRight", },
+	},
+
+    window =
+    {
+        resizable = true,
+        minViewWidth = 960,
+        minViewHeight = 540,
+        defaultViewWidth = 1350,
+        defaultViewHeight = 670,
+        enableMaximizeButton = true,
+        suspendWhenMinimized = true,
+        titleText =
+        {
+            default = "Movie Test"
+        },
+    },
+
+    --
+    -- Splashscreen
+    --
+    splashScreen =
+    {
+        android =
+        {
+            enable = false
+        },
+        ios =
+        {
+            enable = false
+        }
+    },
+
+	--
+	-- Android section
+	--
+	android =
+	{
+		usesPermissions =
+		{
+
+		},
+	},
+
+	--
+	-- Plugins section
+	--
+	plugins =
+	{
+        ['plugin.movie'] =
+        {
+            publisherId = 'com.ansh3ll',
+            supportedPlatforms =
+            {
+                android =
+                {
+                    url = 'https://github.com/ANSH3LL/plugin_movie/releases/download/v0.1/android.tgz'
+                },
+
+                ['win32-sim'] =
+                {
+                    url = 'https://github.com/ANSH3LL/plugin_movie/releases/download/v0.1/win32-sim.tgz'
+                },
+            }
+        },
+	},
+
+	--
+	-- Project section
+	--
+	excludeFiles =
+	{
+		-- Exclude unnecessary files for each platform
+		all = { "Icon.png", "*.ico", "*.txt", },
+	},
+}
