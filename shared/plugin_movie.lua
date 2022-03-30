@@ -24,7 +24,7 @@ local lib = Library:new(
 function lib.newMovieTexture(opts)
     local path = system.pathForFile(opts.filename, opts.baseDir or system.ResourceDirectory)
     local source = audio.getSourceFromChannel(opts.channel or audio.findFreeChannel())
-    return lib._newMovieTexture(path, source)
+    return lib._newMovieTexture(path, source, display.fps)
 end
 
 -- Plug-n-play

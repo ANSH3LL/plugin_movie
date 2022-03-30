@@ -13,7 +13,6 @@ CORONA_EXPORT int CoronaPluginLuaLoad_plugin_movie(lua_State *);
 // ----------------------------------------------------------------------------
 
 CORONA_EXPORT int luaopen_plugin_movie(lua_State *L) {
-
     lua_CFunction factory = Corona::Lua::Open<CoronaPluginLuaLoad_plugin_movie>;
     int result = CoronaLibraryNewWithFactory(L, factory, NULL, NULL);
 
@@ -35,6 +34,8 @@ struct Movie {
     THEORAPLAY_Decoder *decoder = NULL;
     const THEORAPLAY_VideoFrame *video = NULL;
     const THEORAPLAY_AudioPacket *audio = NULL;
+
+    int attempts = 0;
 
     bool playing = false;
     bool stopped = false;
@@ -191,7 +192,7 @@ MAINLOOP:
                     movie->audio = next_packet;
                 }
 
-                if(state != AL_PLAYING && state != AL_PAUSED) {
+                if(state == AL_STOPPED) {
                     if(THEORAPLAY_availableAudio(movie->decoder))
                         alSourcePlay(movie->source);
                     else
@@ -218,7 +219,12 @@ MAINLOOP:
 
     // Finish playing any audio that remains after decoding is completed
     else if(movie->audiostarted && !movie->audiocompleted) {
-        goto MAINLOOP;
+        movie->attempts--;
+
+        if(movie->attempts >= 0)
+            goto MAINLOOP;
+        else
+            movie->audiocompleted = true;
     }
 
     return 0;
@@ -307,6 +313,7 @@ static int newMovieTexture(lua_State *L) {
     }
 
     movie->source = lua_tonumber(L, 2);
+    movie->attempts = lua_tonumber(L, 3);
 
     alSourceRewind(movie->source);
     alSourcei(movie->source, AL_BUFFER, 0);
