@@ -38,6 +38,7 @@ function lib.newMovieRect(opts)
     rect.listener = opts.listener
     --
     rect._delta = 0
+    rect._stop = false
     rect.playing = false
     rect._complete = false
     --
@@ -78,10 +79,13 @@ function lib.newMovieRect(opts)
     end
     --
     rect.stop = function()
+        if rect._stop then return end
+        --
         Runtime:removeEventListener('enterFrame', rect.update)
         --
         rect.playing = false
         rect.texture:stop()
+        rect._stop = true
         --
         if rect.listener then
             rect.listener(
@@ -120,9 +124,9 @@ end
 function lib.newMovieLoop(opts)
     local group = display.newGroup()
     --
-    group._stop = false,
-    group.iterations = 1,
-    group.playing = false,
+    group._stop = false
+    group.iterations = 1
+    group.playing = false
     group.listener = opts.listener
     --
     group.callback = function(event)
@@ -134,34 +138,24 @@ function lib.newMovieLoop(opts)
             group.two.isVisible = true
             group.two.play()
             --
-            timer.performWithDelay(300,
+            timer.performWithDelay(200, group.one.dispose)
+            timer.performWithDelay(500,
                 function()
+                    group.one = lib.newMovieRect(group.options1)
                     group.one.isVisible = false
-                    group.one.texture:releaseSelf()
-                    group.one.texture = lib.newMovieTexture(group.options1)
-                    --
-                    group.one.fill = {
-                        type = 'image',
-                        filename = group.one.texture.filename,
-                        baseDir = group.one.texture.baseDir
-                    }
+                    group:insert(group.one)
                 end
             )
         else
             group.one.isVisible = true
             group.one.play()
             --
-            timer.performWithDelay(300,
+            timer.performWithDelay(200, group.two.dispose)
+            timer.performWithDelay(500,
                 function()
+                    group.two = lib.newMovieRect(group.options2)
                     group.two.isVisible = false
-                    group.two.texture:releaseSelf()
-                    group.two.texture = lib.newMovieTexture(group.options2)
-                    --
-                    group.two.fill = {
-                        type = 'image',
-                        filename = group.two.texture.filename,
-                        baseDir = group.two.texture.baseDir
-                    }
+                    group:insert(group.two)
                 end
             )
         end
@@ -225,7 +219,7 @@ function lib.newMovieLoop(opts)
         group.one.dispose()
         group.two.dispose()
         --
-        group:removeSelf()
+        timer.performWithDelay(300, function() group:removeSelf() end)
         --
         if group.listener then
             group.listener(
