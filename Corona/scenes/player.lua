@@ -169,7 +169,6 @@ function scene:create(event)
             text = '?'
         }
     )
-    info.isVisible = false
     --
     footer = display.newRect(centerX, safeY + height - 25, width, 50)
     footer:setFillColor(0, 0, 0, 0.3)
@@ -238,6 +237,7 @@ function scene:show(event)
         )
         sceneGroup:insert(movierect)
     elseif phase == 'did' then
+        info.isVisible = false
         movierect:toBack()
         --
         playbtn.isVisible = true
