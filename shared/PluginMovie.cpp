@@ -37,6 +37,7 @@ struct Movie {
     const THEORAPLAY_AudioPacket *audio = NULL;
 
     bool playing = false;
+    bool stopped = false;
 
     bool audiostarted = false;
     bool audiocompleted = false;
@@ -128,6 +129,14 @@ static int GetField(lua_State *L, const char *field, void *context) {
 
 static void Dispose(void *context) {
     Movie *movie = (Movie*)context;
+
+    if(!movie->stopped) {
+        movie->stopped = true;
+        movie->playing = false;
+
+        stopAudioStream(movie);
+        THEORAPLAY_stopDecode(movie->decoder);
+    }
 
     THEORAPLAY_freeAudio(movie->audio);
     THEORAPLAY_freeVideo(movie->video);
@@ -242,6 +251,7 @@ static int pause(lua_State *L) {
 static int stop(lua_State *L) {
     Movie *movie = (Movie*)CoronaExternalGetUserData(L, 1);
 
+    movie->stopped = true;
     movie->playing = false;
     stopAudioStream(movie);
 
@@ -278,22 +288,22 @@ static int newMovieTexture(lua_State *L) {
 
     const char *path = lua_tostring(L, 1);
 
-    // File does not exist
     if(!path) {
         delete movie;
 
         lua_pushnil(L);
-        return 1;
+        lua_pushstring(L, "File does not exist");
+        return 2;
     }
 
     movie->decoder = THEORAPLAY_startDecodeFile(path, NUM_MAXFRAMES, THEORAPLAY_VIDFMT_RGBA);
 
-    // Invalid video format / insufficient memory / not a theora video, etc
     if(!movie->decoder) {
         delete movie;
 
         lua_pushnil(L);
-        return 1;
+        lua_pushstring(L, "Invalid pixel format / insufficient memory");
+        return 2;
     }
 
     movie->source = lua_tonumber(L, 2);
