@@ -37,7 +37,7 @@ A convenient way to load and play videos without worrying about the plugin's inn
 
 # MovieRect properties
 - `MovieRect.texture` - reference to the `MovieRect`'s `MovieTexture`
-- `MovieRect.channel` - the audio channel used
+- `MovieRect.channel` - the audio channel used for audio playback
 - `MovieRect.playing` - false if playback is paused
 
 # MovieLoop
