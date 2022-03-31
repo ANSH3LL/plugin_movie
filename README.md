@@ -73,5 +73,5 @@ ffmpeg -i video.mp4 -c:v libtheora -q:v 7 -c:a libvorbis -q:a 5 video.ogv
 ```
 
 # Credits
-[theoraplay](https://github.com/icculus/theoraplay) by [@icculus](https://github.com/icculus)
-Insipired by the [theora](https://github.com/ggcrunchy/solar2d-plugins/tree/master/theora) plugin by [@ggcrunchy](https://github.com/ggcrunchy) as well as the video wrapper by @BiggestPhish on the [Solar2D discord](https://discord.gg/WMtCemc)
+- [theoraplay](https://github.com/icculus/theoraplay) by [@icculus](https://github.com/icculus)
+- Insipired by the [theora](https://github.com/ggcrunchy/solar2d-plugins/tree/master/theora) plugin by [@ggcrunchy](https://github.com/ggcrunchy) as well as the video wrapper by @BiggestPhish on the [Solar2D discord](https://discord.gg/WMtCemc)
