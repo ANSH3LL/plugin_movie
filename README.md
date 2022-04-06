@@ -63,7 +63,6 @@ A convenient way to load and play videos in a loop without worrying about the pl
 - The `MovieLoop` object might not work very well with really short videos (e.g: videos under 10 seconds long)
 - Underpowered devices might experience frame drops, audio stutters and audio/video desynchronization issues
 - The plugin is susceptible to all limitations of the theoraplay library. As a result, the only valid pixel format is `TH_PF_420`. This, however, shouldn't be an issue for most use-cases
-- If you pause/unpause the video too many times in a row, audio and video might start to go out of sync
 - It is recommended to remove all other `enterFrame` event listeners before video playback to ensure smooth playback
 - It is recommended to wait around half a second after initializing any of the movie objects to allow for buffering of frames
 
@@ -74,4 +73,4 @@ ffmpeg -i video.mp4 -c:v libtheora -q:v 7 -c:a libvorbis -q:a 5 video.ogv
 
 # Credits
 - [theoraplay](https://github.com/icculus/theoraplay) by [@icculus](https://github.com/icculus)
-- Insipired by the [theora](https://github.com/ggcrunchy/solar2d-plugins/tree/master/theora) plugin by [@ggcrunchy](https://github.com/ggcrunchy) as well as the video wrapper by @BiggestPhish on the [Solar2D discord](https://discord.gg/WMtCemc)
+- Insipired by the [theora](https://github.com/ggcrunchy/solar2d-plugins/tree/master/theora) plugin by [@ggcrunchy](https://github.com/ggcrunchy) as well as a video wrapper provided by a user of the [Solar2D discord](https://discord.gg/WMtCemc)
