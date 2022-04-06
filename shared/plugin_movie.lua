@@ -40,14 +40,13 @@ function lib.newMovieRect(opts)
     rect._delta = 0
     rect._stop = false
     rect.playing = false
+    rect._started = false
     rect._complete = false
     --
-    rect.update = function()
-        local currtime = system.getTimer()
-        --
+    rect.update = function(event)
         if rect.playing then
             if rect._prevtime then
-                rect._delta = currtime - rect._prevtime
+                rect._delta = event.time - rect._prevtime
             end
             --
             rect.texture:update(rect._delta)
@@ -59,7 +58,7 @@ function lib.newMovieRect(opts)
             end
         end
         --
-        rect._prevtime = currtime
+        rect._prevtime = event.time
     end
     --
     rect.play = function()
@@ -68,7 +67,10 @@ function lib.newMovieRect(opts)
         rect.texture:play()
         rect.playing = true
         --
-        Runtime:addEventListener('enterFrame', rect.update)
+        if not rect._started then
+            rect._started = true
+            Runtime:addEventListener('enterFrame', rect.update)
+        end
     end
     --
     rect.pause = function()
