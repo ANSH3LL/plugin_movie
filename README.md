@@ -9,7 +9,6 @@ Refer to the example project in the `Corona/` directory
 - Capable of playing videos in a loop
 - Renders video to a `CoronaExternalTexture` that can be used to fill a `ShapeObject`, `ImageRect`, etc
 - Automatically plays audio in synchronicity with video
-- Tiny library (dll / so) file size (less than 500KB)
 
 # MovieTexture
 A texture object that can play a video
