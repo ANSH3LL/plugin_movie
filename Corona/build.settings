@@ -62,18 +62,6 @@ settings =
         ['plugin.movie'] =
         {
             publisherId = 'com.ansh3ll',
-            supportedPlatforms =
-            {
-                android =
-                {
-                    url = 'https://github.com/ANSH3LL/plugin_movie/releases/download/v0.1/android.tgz'
-                },
-
-                ['win32-sim'] =
-                {
-                    url = 'https://github.com/ANSH3LL/plugin_movie/releases/download/v0.1/win32-sim.tgz'
-                },
-            }
         },
 	},
 
