@@ -2,7 +2,46 @@
 A video-to-texture plugin for the solar2D (formerly corona-sdk) game engine
 
 # Usage
-Refer to the example project in the `Corona/` directory
+Add the plugin to your build settings like so:
+```lua
+plugins = {
+    ["plugin.movie"] = {
+        publisherId = "com.ansh3ll"
+    },
+},
+```
+
+Simple usage example like so:
+```lua
+local movie = require('plugin.movie')
+
+local function movieListener(event)
+    if event.phase == 'stopped' then
+        print('Video watched to end? ', event.completed)
+    end
+    --
+    for k, v in pairs(event) do
+        print(k .. ' = ' .. v)
+    end
+end
+
+local player = movie.newMovieRect(
+    {
+        x = display.contentCenterX,
+        y = display.contentCenterY,
+        width = 960,
+        height = 540,
+        channel = 3,
+        listener = movieListener,
+        filename = 'intro_cutscene.ogv'
+    }
+)
+
+audio.setVolume(1, {channel = player.channel})
+player.play()
+```
+
+A more advanced usage example can be found in the `Corona/` directory [here](https://github.com/ANSH3LL/plugin_movie/tree/main/Corona)
 
 # Features
 - Plays `Ogg Theora` video files
