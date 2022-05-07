@@ -59,10 +59,10 @@ settings =
 	--
 	plugins =
 	{
-        ['plugin.movie'] =
-        {
-            publisherId = 'com.ansh3ll',
-        },
+    	['plugin.movie'] =
+    	{
+    		publisherId = 'com.ansh3ll',
+    	},
 	},
 
 	--
