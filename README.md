@@ -95,7 +95,6 @@ A convenient way to load and play videos in a loop without worrying about the pl
 - `MovieLoop.playing` - false if playback is paused
 
 # Caveats and recommendations
-- Only supports windows and android (if you can provide iOS and macOS support, please let me know)
 - Only mono and stereo audio is supported. Videos with more than 2 audio channels might not sound as expected
 - Playback speed is limited by the engine's fps. It is thus recommended to use videos with a framerate several values below your game's fps as set in `config.lua`
 - Depending on video resolution, memory usage could be high
