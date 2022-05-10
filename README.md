@@ -1,6 +1,12 @@
 # Movie
 A video-to-texture plugin for the solar2D (formerly corona-sdk) game engine
 
+# Features
+- Plays `Ogg Theora` video files
+- Capable of playing videos in a loop
+- Renders video to a `CoronaExternalTexture` that can be used to fill a `ShapeObject`, `ImageRect`, etc
+- Automatically plays audio in synchronicity with video
+
 # Usage
 Add the plugin to your build settings like so:
 ```lua
@@ -44,12 +50,6 @@ player.play()
 A more advanced usage example can be found in the `Corona/` directory [here](https://github.com/ANSH3LL/plugin_movie/tree/main/Corona)
 
 If you would like to take the DIY option and use a `MovieTexture` to fill an object of your choice, take a look at the implementation of `MovieRect` [here](https://github.com/ANSH3LL/plugin_movie/blob/cfe8c121bc9d797f4ec6622a04f827a10cd56ccd/shared/plugin_movie.lua#L31)
-
-# Features
-- Plays `Ogg Theora` video files
-- Capable of playing videos in a loop
-- Renders video to a `CoronaExternalTexture` that can be used to fill a `ShapeObject`, `ImageRect`, etc
-- Automatically plays audio in synchronicity with video
 
 # MovieTexture
 A texture object that can play a video
