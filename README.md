@@ -107,7 +107,7 @@ A convenient way to load and play videos in a loop without worrying about the pl
 
 # Simple mp4 to ogv example using ffmpeg
 ```
-ffmpeg -i video.mp4 -c:v libtheora -q:v 7 -c:a libvorbis -q:a 5 video.ogv
+ffmpeg -i video.mp4 -c:v libtheora -q:v 7 -c:a libvorbis -q:a 5 -pix_fmt yuv420p video.ogv
 ```
 
 # Credits
